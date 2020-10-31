@@ -1,70 +1,22 @@
-var a = 1000;
-var b = 9;
+ //переменные
 
-var res = a + b;
+ var a = 10;
+ var b = 9;
+ var str = "It is result:"
 
-console.log("it is result: " + res);
-console.log(a + " + " + b + " = " + res);
+ var res = a; // res = 10
+ var sum = a + b; //sum = 19
+ var sumStr = str + sum; //lessen-1.js:13 It is result:19
 
-var t = "1000";
-//булевые
+ console.log("it is result: ");
+ console.log(sum);
+ console.log(sumStr);
+ console.log("it is result: " + sum);
 
-var e = true;
-var f = false;
+ console.log(a + " + " + b + " = " + sum); //10+9=19
 
-//  операторы сравнения
-// == - сравнение, при сравнении не учитывает тип переменной
-// !=
-// >
-// <
-// >=
-// <=
-// === при сравнении учитывает тип переменной
-// !==
+//переменная булиан
+var c = true;
+var d = false;
 
-
-var c = 0;
-var d = 10;
-
-if(!a + b > 11) {
-  console.log("yes");
-}else{
-  console.log("not");
-};
-
-//оператор switch
-
-// switch(value) {
-//   case val1: ...;
-//   case val2: ...;
-//   default: ...:
-// }
-
-var ab = 10;
-var ac = 2;
-var ad = "*";
-
-var res = 0;
-
-switch(c) {
-  case "+": res = a + b; break;
-  case "-": res = a - b; break;
-  case "*": res = a * b; break;
-  case "/": res = a / b; break;
-  default: res = 0;
-}
-console.log(res);
-
-//инкримент и дикримент
-
-var n = 9;
-var m = ++a + 10;
-
-console.log(m);
-
-//цыкл
-var s = 0;
-
-for(var i = 0; i < 10; i++){
-  s += i;
-}
+var e = a == 9; //false
