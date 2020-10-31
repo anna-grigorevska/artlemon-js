@@ -54,3 +54,17 @@ switch(c) {
   default: res = 0;
 }
 console.log(res);
+
+//инкримент и дикримент
+
+var n = 9;
+var m = ++a + 10;
+
+console.log(m);
+
+//цыкл
+var s = 0;
+
+for(var i = 0; i < 10; i++){
+  s += i;
+}
