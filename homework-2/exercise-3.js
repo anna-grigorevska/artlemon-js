@@ -1,3 +1,5 @@
+/*Дано число - вывести первые N делителей этого числа нацело.*/
+
 var givenNamber = +prompt('Enter any number');
 var counter = +prompt('Enter the number of displayed values');
 var result = [];

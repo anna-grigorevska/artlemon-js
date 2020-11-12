@@ -1,3 +1,5 @@
+/*Найти сумму цифр числа которые кратны двум*/
+
 var givenNamber = prompt('Enter any number');
 var result = 0;
 
