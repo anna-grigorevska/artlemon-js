@@ -1,3 +1,5 @@
+/*Написать функцию, которая транспонирует матрицу*/
+
 function transposeMatrix(a){
     var b = [];
     for(var i = 0; i < a.length; i++){

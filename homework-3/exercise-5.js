@@ -3,7 +3,7 @@
 сумма которых положительна - 
 оформить в виде функции*/
 
-function deliteColumn(c){
+function deleteColumn(c){
     var result = [];
     for(var i = 0; i < c.length;i++){
         var sum = 0, haveZero = false;
