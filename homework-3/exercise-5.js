@@ -9,20 +9,23 @@ function deliteColumn(c){
         var sum = 0, haveZero = false;
         for(var j = 0; j < c[i].length; j++){
             sum += c[i][j];
-            // if(){
-
-            // }
+            if(c[i][j] === 0){
+                haveZero = true;
+            }
         }
-        if(sum <= 0){
+        if(sum <= 0  && haveZero){
             result.push(c[i]);
         } 
         
     }
+    return result;
 }
 
+console.log(deliteColumn(
+    [
+        [1,-7,3],
+        [1,0,3],
+        [1,-15,0],
+    ] 
+));
 
-[
-    [1,2,3],
-    [1,2,3],
-    [1,2,3],
-]
