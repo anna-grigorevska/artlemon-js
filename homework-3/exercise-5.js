@@ -21,11 +21,3 @@ function deliteColumn(c){
     return result;
 }
 
-console.log(deliteColumn(
-    [
-        [1,-7,3],
-        [1,0,3],
-        [1,-15,0],
-    ] 
-));
-
