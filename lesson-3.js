@@ -320,11 +320,23 @@ var group = (function(){
     return sum / result.length;
   }//средний бал
 
+  function getStudentsByEstimate(){
+    var res = [];
+    var avg = avgEstimate();
+    for(var i = 0; i < result.length; i++){
+      if(result[i].estimate > avg){
+        res.push(result[i]);
+      }
+    }
+    return res;
+  } //студент у которого оценка выше среднего бала
+
   return{
     add: add,
     print: print,
     remove: remove,
-    avgEstimate: avgEstimate
+    avgEstimate: avgEstimate,
+    getStudentsByEstimate: getStudentsByEstimate
   };
 }) ();
 
@@ -338,7 +350,7 @@ var st2 ={
 };
 var st3 ={
   firstname: "Dina",
-  estimate: 4.8,
+  estimate: 4.0,
 };
 group.add(st);
 group.add(st2);
@@ -347,4 +359,7 @@ group.remove("Dina");//то что удаляется
 group.print();
 
 var srBal = group.avgEstimate();
-console.log("avg: " + srBal); //средний бал - avg: 4.8
+console.log("avg: " + srBal); //средний бал - avg: 4.4
+
+var stus = group.getStudentsByEstimate();
+console.log(stus); //"Lina - 4.8", потому что "Dina - 5" была изначально удалена, а потом находился студент с вышим балом чеи средний
