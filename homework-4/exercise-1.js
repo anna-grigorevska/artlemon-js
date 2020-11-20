@@ -41,4 +41,33 @@ var n = +prompt('enter min: ');
 var m = +prompt('enter max: ');
 var count = +prompt('enter count: ');
 
-alert(arrayGeneration(n, m, count));
+var result = arrayGeneration(n, m, count)
+
+/*Использовать функцию из предыдущего задания чтобы получить массив 
+из нужного количества значений. Найти процентное соотношение отрицательных, 
+положительных и нулевых элементов массива.
+*/ 
+
+function calculatePercentages(result){
+    var zero = 0, positive = 0, negative = 0;
+    for(var i = 0; i < result.length; i++){
+        if(result[i] === 0){
+            zero++;
+        }else if(result[i] > 0){
+            positive++;
+        }else{
+            negative++;
+        }
+    }
+    var zeroPercentages = (zero / result.length) * 100;
+    var positivePercentages = (positive / result.length) * 100;
+    var negativePercentages = (negative / result.length) * 100;
+    return {
+        zeroPercentages: zeroPercentages + ' %',
+        positivePercentages: positivePercentages + ' %',
+        negativePercentages: negativePercentages + ' %'
+    }
+}
+
+console.log(result);
+console.log( calculatePercentages(result));
