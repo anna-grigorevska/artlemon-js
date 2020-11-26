@@ -1,0 +1,155 @@
+*{
+  margin: 0;
+}
+.students{
+  background-color: rgb(228, 222, 222);
+ 
+  padding: 50px;
+}
+.add-student{
+  margin: 50px 0 0 50px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(190, 190, 190);
+  max-width: 500px;
+}
+.add-student .add{
+  width: 100%;
+  display: flex;
+  margin-bottom: 20px;
+}
+.add-student h3{
+  font-size: 30px;
+  font-weight: 700;
+  color: rgb(27, 23, 23);
+  margin: 0 0 30px;
+}
+.add-student .add label{
+  font-size: 18px;
+  margin-right: 15px;
+  width: 50%;
+}
+.add-student .add input{
+  height: 20px;
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+.add-student .btn-add{
+  background-color: rgb(79, 116, 218);
+  border: 1px solid white;
+  height: 30px;
+  width: 100px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.add-student .btn-add:hover{
+  border-color: rgb(79, 116, 218);
+  background-color: white;
+  color: rgb(79, 116, 218);
+}
+.list-students {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.students .list-students .text-block{
+  margin: 50px 0 0 50px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(190, 190, 190);
+  max-width: 500px;
+}
+
+.students .text-block h1{
+  font-size: 30px;
+  font-weight: 700;
+  color: rgb(27, 23, 23);
+  margin: 0 0 30px;
+}
+.students .text-block table{
+  border: 1px solid #000;
+  padding: 10px;
+}
+.students .text-block table tr th{
+  border: 1px solid #000;
+  padding: 10px;
+  font-size: 22px;
+}
+.students .text-block table tr td{
+  border: 1px solid #000;
+  padding: 10px;
+  font-size: 17px;
+  text-align: center;
+}
+.list-students .text-block table tr td .btn-delete{
+  border: none;
+  background: none;
+  font-size: 30px;
+  color: #000;
+  transition: all 0.3s;
+  transform: rotate(45deg);
+}
+.list-students .text-block table tr td .btn-delete:hover{
+  color: red;
+}
+.list-students .text-block table tr td .btn-delete:focus{
+  outline: none;
+}
+.list-students .no-students{
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.list-students .no-students.show{
+  display: flex;
+}
+.list-students .no-students p{
+  font-size: 30px;
+  color: rgb(160, 10, 10);
+}
+.students .statistics-estimate,
+.students .statistics-inactive
+{
+  max-width: 330px;
+  margin: 50px 0 0 50px;
+  padding: 50px;
+  background-color: rgb(190, 190, 190);
+  display: flex;
+  flex-direction: column;
+}
+.students .statistics-estimate h3,
+.students .statistics-inactive h3{
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+.students .statistics-estimate table,
+.students .statistics-inactive table{
+  border: 1px solid #000;
+  padding: 10px;
+}
+.students .statistics-estimate table tr th,
+.students .statistics-inactive table tr th{
+  border: 1px solid #000;
+  padding: 10px;
+  font-size: 22px;
+}
+.students .statistics-estimate table tr td,
+.students .statistics-inactive table tr td{
+  border: 1px solid #000;
+  padding: 10px;
+  font-size: 17px;
+  text-align: center;
+}
+
+.students .statistics-inactive .sum-students{
+  font-size: 16px;
+  margin-top: 20px;
+}
+.students .statistics-inactive .sum-students span{
+  font-size: 18px;
+}

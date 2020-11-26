@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>exercise 3</title>
+  <link rel="stylesheet" href="ex-3.css">
+</head>
+<body>
+  <main class="students">
+    <div class="add-student">
+      <h3>Добавление студента</h3>
+      <form onsubmit="addStudent(this);return false;">
+        <div class="add">
+          <label for="name-student">Имя студента</label>
+          <input type="text" name="name" id="name-student" id="name-id">
+        </div>
+        <div class="add">
+          <label for="course-student">Курс</label>
+          <input type="text" name="course" id="course-student">
+        </div>
+        <div class="add">
+          <label for="estimate-student">Оценка</label>
+          <input type="text" name="estimate" id="estimate-student">
+        </div>
+        <div class="add">
+            <label for="active-student">Активный студент</label>
+            <input type="checkbox" name="active" id="active-student">
+        </div>
+        <button type="submit" class="btn-add">Добавить</button>
+      </form>
+    </div>
+    <div class="list-students">
+      <div class="text-block">
+        <h1>Список студентов</h1>
+        <table >
+          <tr>
+            <th>Имя</th>
+            <th>Оценка</th>
+            <th>Курс</th>
+            <th>Активный</th>
+            <th></th>
+          </tr>
+          <tbody id="tbody">
+
+          </tbody>
+        </table>
+        <div id="no-students" class="no-students">
+          <p>Студенты не найдены</p>
+        </div>
+      </div>
+    </div>
+    <div class="statistics-estimate">
+      <h3>Статистика средних оценок</h3>
+      <table>
+        <tr>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>5</th>
+        </tr>
+        <tbody id="tbody-estimate">
+        </tbody>
+      </table>
+    </div>
+    <div class="statistics-inactive">
+      <h3>Статистика неактивных студентов</h3>
+      <table>
+        <tr>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>5</th>
+        </tr>
+        <tbody id="tbody-inactive">
+        </tbody>
+      </table>
+      <div class="sum-students">
+        Oбщее количество неактивных студентов - <span id="amountInactiveStudents"></span>
+      </div>
+    </div>
+  </main>
+  <script src="exercise-3.js"></script>
+</body>
+</html>
