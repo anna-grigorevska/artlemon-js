@@ -118,3 +118,33 @@ function search (el, index, arr){
 
 var el = m.find(search);
 console.log(el); //-1
+
+//строки
+
+var str = 'Hello my friends';
+
+var s2 = 'my';
+
+console.log(str.indexOf(s2)); //6 - индекс начала где начинается подстрока в переменной s2 в строке str
+
+var s3 = 'qqqq';
+console.log(str.indexOf(s3)); //-1 - если не нашло строку
+
+if(str.indexOf(s2) !== -1){
+  console.log('yes');
+}else{
+  console.log('no');
+} //yes
+
+
+if(str.indexOf(s3) !== -1){
+  console.log('yes');
+}else{
+  console.log('no');
+} //no
+
+//инвертирование
+
+var inv = 2;
+
+console.log(~inv); //-3 = -(inv + 1)

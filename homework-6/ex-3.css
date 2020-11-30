@@ -62,7 +62,6 @@
   flex-direction: column;
   align-items: center;
   background-color: rgb(190, 190, 190);
-  max-width: 500px;
 }
 
 .students .text-block h1{
@@ -86,6 +85,15 @@
   font-size: 17px;
   text-align: center;
 }
+.students .text-block table tr.green td{
+  background-color: green;
+}
+.students .text-block table tr.yellow td{
+  background-color: yellow;
+}
+.students .text-block table tr.red td{
+  background-color: red;
+}
 .list-students .text-block table tr td .btn-delete{
   border: none;
   background: none;
@@ -93,12 +101,36 @@
   color: #000;
   transition: all 0.3s;
   transform: rotate(45deg);
+  cursor: pointer;
 }
 .list-students .text-block table tr td .btn-delete:hover{
   color: red;
 }
 .list-students .text-block table tr td .btn-delete:focus{
   outline: none;
+}
+.list-students .text-block table tr td img{
+  max-width: 29px;
+  cursor: pointer;
+  display: none;
+}
+.list-students .text-block table tr td.active img.active{
+  display: block;
+}
+.list-students .text-block table tr td.inactive img.inactive{
+  display: block;
+}
+.list-students .text-block table tr td .form-control{
+  background: none;
+  border: 1px solid rgba(0, 0, 0,  0);
+  text-align: center;
+  font-size: 17px;
+  height: 25px;
+  width: 100px;
+}
+.list-students .text-block table tr td .form-control:focus{
+  border: 1px solid rgba(0, 0, 0,  1);
+  background-color: honeydew;
 }
 .list-students .no-students{
   display: none;
@@ -144,6 +176,15 @@
   padding: 10px;
   font-size: 17px;
   text-align: center;
+}
+.students .statistics-estimate table tr td.green{
+  background-color: green;
+}
+.students .statistics-estimate table tr td.yellow{
+  background-color: yellow;
+}
+.students .statistics-estimate tr td.red{
+  background-color: red;
 }
 
 .students .statistics-inactive .sum-students{
