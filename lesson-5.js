@@ -148,3 +148,41 @@ if(str.indexOf(s3) !== -1){
 var inv = 2;
 
 console.log(~inv); //-3 = -(inv + 1)
+
+//поиск элемент html
+var p = document.querySelector("p");
+console.dir(p); //p#text.text
+
+//удаление элемента со стораницы
+
+// p.outerHTML = ""; //весь элемент
+
+console.log(p.innerHTML); // 111 -- содержимое элемента
+
+
+var data1 = parseInt(p.innerHTML);
+var data2 = parseInt(p.innerHTML);
+var result = data1 + data2;
+p.innerHTML = '<span class="result"> result: ' + result + '</span>'; //result: 222
+
+p = document.querySelectorAll("p");
+
+for(var i = 0; i < p.length; i++){
+  var spans =  p[i].querySelectorAll("span");
+  console.log(spans.length); //3 элемента - 0 спанов, 1 элемент со спаном
+}
+
+
+//ПОИСК ПО ID
+pId = document.getElementById("text");
+console.log(pId); //<p id="text" class="text"> 111</p>
+
+//поиск по атрибуту
+
+p = document.getElementById("text");
+
+var num = p.getAttribute("data-number");
+console.log(num); //2
+
+num *= 10;
+p.setAttribute("data-number", num); //перезаписали значение атрибута
