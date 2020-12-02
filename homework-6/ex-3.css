@@ -92,7 +92,7 @@
   background-color: yellow;
 }
 .students .text-block table tr.red td{
-  background-color: red;
+  background-color:rgba(255, 0, 0, 0.7);
 }
 .list-students .text-block table tr td .btn-delete{
   border: none;
@@ -120,6 +120,29 @@
 .list-students .text-block table tr td.inactive img.inactive{
   display: block;
 }
+.list-students .text-block table tr td form.error{
+  position: relative;
+}
+.list-students .text-block table tr td form span{
+  display: none;
+}
+.error-add-student{
+  font-size: 18px;
+  color: red;
+  margin-bottom: 15px;
+}
+.list-students .text-block table tr td form.error span{
+  display: block;
+  position: absolute;
+  background-color: brown;
+  color: aliceblue;
+  font-size: 12px;
+  font-weight: normal;
+  width: 128px;
+  bottom: -33px;
+  left: -11px;
+  border-radius: 3px;
+}
 .list-students .text-block table tr td .form-control{
   background: none;
   border: 1px solid rgba(0, 0, 0,  0);
@@ -145,8 +168,8 @@
   color: rgb(160, 10, 10);
 }
 .students .statistics-estimate,
-.students .statistics-inactive
-{
+.students .statistics-inactive,
+.students .statistics-last-hour{
   max-width: 330px;
   margin: 50px 0 0 50px;
   padding: 50px;
@@ -154,8 +177,12 @@
   display: flex;
   flex-direction: column;
 }
+.students .statistics-last-hour{
+  display: flex;
+}
 .students .statistics-estimate h3,
-.students .statistics-inactive h3{
+.students .statistics-inactive h3,
+.students .tatistics-last-hour h3{
   font-size: 22px;
   margin-bottom: 20px;
 }
@@ -184,7 +211,7 @@
   background-color: yellow;
 }
 .students .statistics-estimate tr td.red{
-  background-color: red;
+  background-color:rgba(255, 0, 0, 0.7);
 }
 
 .students .statistics-inactive .sum-students{

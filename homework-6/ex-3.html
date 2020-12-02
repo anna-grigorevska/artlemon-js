@@ -23,9 +23,14 @@
           <input type="text" name="estimate" id="estimate-student">
         </div>
         <div class="add">
+          <label for="email-student">Email</label>
+          <input type="email" name="email" id="email-student">
+        </div>
+        <div class="add">
             <label for="active-student">Активный студент</label>
             <input type="checkbox" name="active" id="active-student">
         </div>
+        <p class="error-add-student" id="error-add-student"></p>
         <button type="submit" class="btn-add">Добавить</button>
       </form>
     </div>
@@ -37,8 +42,10 @@
             <th>Имя</th>
             <th>Оценка</th>
             <th>Курс</th>
+            <th>Email</th>
             <th>Активный</th>
             <th></th>
+            <th>Дата</th>
             <th></th>
           </tr>
           <tbody id="tbody">
@@ -49,6 +56,10 @@
           <p>Студенты не найдены</p>
         </div>
       </div>
+    </div>
+    <div class="statistics-last-hour">
+      <h3>Добавленные за последний час</h3>
+      <span></span>
     </div>
     <div class="statistics-estimate">
       <h3>Статистика средних оценок</h3>

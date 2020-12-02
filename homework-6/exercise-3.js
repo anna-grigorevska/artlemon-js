@@ -8,110 +8,26 @@ let students = [
     name: 'Ivan',
     estimate: 4,
     course: 1,
-    active: true
+    active: true,
+    email: 'dfcafc@gmail.com',
+    date: '23:00 01.12.2020'
   },
   {
     name: 'Ivan',
     estimate: 4,
     course: 3,
-    active: true
+    active: true,
+    email: 'dfcafc@gmail.com',
+    date: '23:00 01.12.2020'
   },
   {
     name: 'Ivan',
     estimate: 2.9,
     course: 3,
-    active: false
+    active: false,
+    email: 'dfcafc@gmail.com',
+    date: '23:00 01.12.2020'
   },
-  {
-    name: 'Ivan',
-    estimate: 3.4,
-    course: 3,
-    active: false
-  },
-  {
-    name: 'Ivan',
-    estimate: 4.7,
-    course: 3,
-    active: true
-  },
-  {
-    name: 'Ivan', 
-    estimate: 3,
-    course: 1,
-    active: true
-  },
-  {
-    name: 'Ivan',
-    estimate: 2,
-    course: 4,
-    active: false
-  },
-  {
-    name: 'Ivan',
-    estimate: 5,
-    course: 2,
-    active: true
-  },
-  {
-    name: 'Ivan',
-    estimate: 2,
-    course: 1,
-    active: false
-  },
-  {
-    name: 'Ivan', 
-    estimate: 5,
-    course: 5,
-    active: true
-  },
-  {
-    name: 'Ivan',
-    estimate: 3.5,
-    course: 1,
-    active: true
-  },
-  {
-    name: 'Ivan',
-    estimate: 3.1,
-    course: 4,
-    active: false
-  },
-  {
-    name: 'Ivan',
-    estimate: 4.4,
-    course: 4,
-    active: true
-  },
-  {
-    name: 'Ivan',
-    estimate: 2.4,
-    course: 2,
-    active: false
-  },
-  {
-    name: 'Ivan',
-    estimate: 2.7,
-    course: 5,
-    active: false
-  },
-  {
-    name: 'Ivan',
-    estimate: 4.9,
-    course: 5,
-    active: true
-  },
-  {
-    name: 'Ivan',
-    estimate: 4.2,
-    course: 4,
-    active: true
-  },
-  {
-    name: 'Ivan',
-    estimate: 4,
-    course: 5,
-    active: true
-  }
 ];
 
 function draw(students){
@@ -130,7 +46,8 @@ function draw(students){
       <tr class="${className}">
         <td> 
           <form onsubmit="changeName(this, ${i});return false;">
-            <input value="${students[i].name}" name="name" type="text" class="form-control"/>
+            <input value="${students[i].name}" name="name" type="text" maxlength="15" class="form-control"/>
+            <span>Имя должно содержать только буквы</span>
           </form> 
         </td>
         <td>
@@ -141,6 +58,13 @@ function draw(students){
         <td>
           <form onsubmit="changeCourse(this, ${i});return false;">
             <input value="${students[i].course}" name="course" type="text" class="form-control"/>
+            <span>Введите целое число от 1 до 5</span>
+          </form> 
+        </td>
+        <td>
+          <form onsubmit="changeEmail(this, ${i});return false;">
+            <input value="${students[i].email}" name="email" placeholder="@gmail.com" type="email" class="form-control"/>
+            <span>Введите валидный email</span>
           </form> 
         </td>
         <td>${students[i].active}</td>
@@ -148,6 +72,7 @@ function draw(students){
           <img src="./Circle_Green.png" alt="Circle_Green" class="active" onclick="toggleStatus(${i})"/>
           <img src="./Circle_Red.png" alt="Circle_Red" class="inactive" onclick="toggleStatus(${i})"/>
         </td>
+        <td>${students[i].date}</td>
         <td><button class="btn-delete" onclick="deleteStudent(${i})">+</button></td>
       </tr>
     `;
@@ -266,14 +191,45 @@ function drawAll(){
 оценки и checkbox для активности студента, по нажатии на кнопку 
 “Добавить” - студент новый добавляется в список студентов*/
 
+function validateName(name){
+  const re = /^[a-zа-яё]+$/;
+  return re.test(name.toLowerCase());
+}
+
+function validateEmail(email) {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email.toLowerCase());
+}
+
 function addStudent(form){
-  students.unshift({
-    name: form.name.value,
-    estimate: +form.estimate.value,
-    course: +form.course.value,
-    active: form.active.checked
-  });
-  drawAll();
+  const name = form.name.value;
+  const course = +form.course.value;
+  const email = form.email.value;
+  const errorEl = document.getElementById('error-add-student');
+  let validation = '';
+  if(!validateName(name)){
+    validation += '<p>Имя должно содержать только буквы</p>';
+  }
+  if(!(course >= 1 && course <= 5)){
+    validation += '<p>Введите курс от 1 до 5</p>';
+  }
+  if(!validateEmail(email)){
+  validation += '<p>Введите валидный email</p>';
+  }
+  if(validation.length === 0){
+    students.unshift({
+      name: name,
+      estimate: +form.estimate.value,
+      course: course,
+      email: email,
+      active: form.active.checked
+    });
+    errorEl.innerHTML = '';
+    drawAll();
+  }else{
+    errorEl.innerHTML = validation;
+    form.classList.add('error');
+  }
 }
 
 
@@ -309,12 +265,36 @@ function changeEstimate(form, index){
   drawAll();
 
 }
+
 function changeName(form, index){
-  students[index].name = form.name.value;
-  drawAll();
+  const value = form.name.value;
+  if(validateName(value)){
+    students[index].name = value;
+    drawAll();
+  }else{
+    form.classList.add('error');
+  }
 }
+
 function changeCourse(form, index){
-  students[index].course = +form.course.value;
-  drawAll();
+  const value =  +form.course.value;
+  if(value >= 1 && value <= 5){
+    students[index].course = value;
+    drawAll();
+  }else{
+    form.classList.add('error');
+  }
 }
+
+function changeEmail(form, index){
+  const value = form.email.value;
+  if(validateEmail(value)){
+    students[index].email = value;
+    drawAll();
+  }else{
+    form.classList.add('error');
+  }
+}
+
+
 
