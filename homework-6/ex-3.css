@@ -177,14 +177,16 @@
   display: flex;
   flex-direction: column;
 }
-.students .statistics-last-hour{
-  display: flex;
-}
+
 .students .statistics-estimate h3,
 .students .statistics-inactive h3,
 .students .tatistics-last-hour h3{
   font-size: 22px;
   margin-bottom: 20px;
+}
+.students .statistics-last-hour h3 span{
+  color: rgb(167 26 26);
+  font-size: 25px;
 }
 .students .statistics-estimate table,
 .students .statistics-inactive table{

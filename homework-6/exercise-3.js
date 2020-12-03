@@ -3,32 +3,11 @@
 (удаляется как со страницы, так и с объекта), если был удален последний студент написать текстовое сообщение (“Студенты не найдены”)
 */
 
-let students = [
-  {
-    name: 'Ivan',
-    estimate: 4,
-    course: 1,
-    active: true,
-    email: 'dfcafc@gmail.com',
-    date: '23:00 01.12.2020'
-  },
-  {
-    name: 'Ivan',
-    estimate: 4,
-    course: 3,
-    active: true,
-    email: 'dfcafc@gmail.com',
-    date: '23:00 01.12.2020'
-  },
-  {
-    name: 'Ivan',
-    estimate: 2.9,
-    course: 3,
-    active: false,
-    email: 'dfcafc@gmail.com',
-    date: '23:00 01.12.2020'
-  },
-];
+let students = [];
+
+if(localStorage.getItem('students')){
+  students = JSON.parse(localStorage.getItem('students'));
+}
 
 function draw(students){
   const tbody = document.getElementById('tbody');
@@ -89,14 +68,8 @@ function draw(students){
 
 function deleteStudent(index){
   students.splice(index, 1);
-
-  draw(students);
-  amountInactiveStudents(students);
-  averageRatingStudents(students);
-  amountInactiveStudentsByCourse(students);
+  drawAll();
 }
-
-draw(students);
 
 
 /*Вывести статистику средних оценок в разрезе курса и статистику по количеству неактивных
@@ -176,15 +149,28 @@ function amountInactiveStudentsByCourse(students){
   `;
 }
 
-amountInactiveStudents(students);
-averageRatingStudents(students);
-amountInactiveStudentsByCourse(students);
+function millisecondsToHours(time){
+  return time / 1000 / 60 / 60;
+}
+
+function lastCreatedStudents(students){
+  let statisticsLastHour = document.getElementById('statistics-last-hour');
+  let amount = 0;
+  for(student of students){
+    if(millisecondsToHours(+new Date()) - millisecondsToHours(+new Date(student.date)) < 1){
+      amount++;
+    }
+  }
+  statisticsLastHour.innerText = amount;
+}
 
 function drawAll(){
   draw(students);
   amountInactiveStudents(students);
   averageRatingStudents(students);
   amountInactiveStudentsByCourse(students);
+  lastCreatedStudents(students);
+  localStorage.setItem('students', JSON.stringify(students));
 }
 
 /*Добавить текстовое поле ввода - ввод имени студента, поле ввода для курса, 
@@ -200,6 +186,7 @@ function validateEmail(email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email.toLowerCase());
 }
+
 
 function addStudent(form){
   const name = form.name.value;
@@ -222,7 +209,8 @@ function addStudent(form){
       estimate: +form.estimate.value,
       course: course,
       email: email,
-      active: form.active.checked
+      active: form.active.checked,
+      date: new Date().toUTCString()
     });
     errorEl.innerHTML = '';
     drawAll();
@@ -257,7 +245,7 @@ function toggleStatus(index){
   } else {
     students[index].active = true;
   }
-  draw(students);
+  drawAll();
 }
 
 function changeEstimate(form, index){
@@ -296,5 +284,4 @@ function changeEmail(form, index){
   }
 }
 
-
-
+drawAll();
