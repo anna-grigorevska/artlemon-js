@@ -5,10 +5,6 @@
 
 let students = [];
 
-if(localStorage.getItem('students')){
-  students = JSON.parse(localStorage.getItem('students'));
-}
-
 function draw(students){
   const tbody = document.getElementById('tbody');
   let studentsNotFound = document.getElementById('no-students');
@@ -18,14 +14,14 @@ function draw(students){
   for (i in students){
     const className = getClassByEstimation(students[i].estimate);
     let activeClassName = 'inactive';
-    if(students[i].active){
+    if(students[i].is_active){
       activeClassName = 'active';
     }
     template += `
       <tr class="${className}">
         <td> 
           <form onsubmit="changeName(this, ${i});return false;">
-            <input value="${students[i].name}" name="name" type="text" maxlength="15" class="form-control"/>
+            <input value="${students[i].first_name}" name="first_name" type="text" maxlength="15" class="form-control"/>
             <span>Имя должно содержать только буквы</span>
           </form> 
         </td>
@@ -46,7 +42,7 @@ function draw(students){
             <span>Введите валидный email</span>
           </form> 
         </td>
-        <td>${students[i].active}</td>
+        <td>${students[i].is_active}</td>
         <td class="${activeClassName}"> 
           <img src="./Circle_Green.png" alt="Circle_Green" class="active" onclick="toggleStatus(${i})"/>
           <img src="./Circle_Red.png" alt="Circle_Red" class="inactive" onclick="toggleStatus(${i})"/>
@@ -67,8 +63,18 @@ function draw(students){
 }
 
 function deleteStudent(index){
-  students.splice(index, 1);
-  drawAll();
+  sendRequest(
+    'DELETE',
+    'https://evgeniychvertkov.com/api/student/' + students[index].id + '/',
+    function(res){
+      if(res.is_success){
+        getStudents();
+        return;
+      }
+      students.splice(index, 1);
+      drawAll();
+    }
+  );
 }
 
 
@@ -112,7 +118,7 @@ function amountInactiveStudents(students){
   let result = 0;
 
   for(student of students){
-    if(!student.active){
+    if(!student.is_active){
       result++;
     }
   }
@@ -132,7 +138,7 @@ function amountInactiveStudentsByCourse(students){
   for(let i = 1; i <= 5; i++){
     let amountStudents = 0;
     for(student of students){
-      if(!student.active && student.course === i){
+      if(!student.is_active && student.course === i){
         amountStudents++;
       }
     }
@@ -189,12 +195,20 @@ function validateEmail(email) {
 
 
 function addStudent(form){
-  const name = form.name.value;
+  const first_name = form.first_name.value;
   const course = +form.course.value;
   const email = form.email.value;
+  const student = {
+    first_name: first_name,
+    estimate: +form.estimate.value,
+    course: course,
+    email: email,
+    is_active: form.is_active.checked,
+    date: new Date().toUTCString()
+  };
   const errorEl = document.getElementById('error-add-student');
   let validation = '';
-  if(!validateName(name)){
+  if(!validateName(first_name)){
     validation += '<p>Имя должно содержать только буквы</p>';
   }
   if(!(course >= 1 && course <= 5)){
@@ -204,15 +218,14 @@ function addStudent(form){
   validation += '<p>Введите валидный email</p>';
   }
   if(validation.length === 0){
-    students.unshift({
-      name: name,
-      estimate: +form.estimate.value,
-      course: course,
-      email: email,
-      active: form.active.checked,
-      date: new Date().toUTCString()
-    });
     errorEl.innerHTML = '';
+    sendRequest('POST', 'https://evgeniychvertkov.com/api/student/', function(res){
+      if(res.is_success){
+        getStudents();
+        return;
+      }
+    }, student);
+    students.unshift(student);
     drawAll();
   }else{
     errorEl.innerHTML = validation;
@@ -240,25 +253,27 @@ function getClassByEstimation(estimation){
 
 
 function toggleStatus(index){
-  if(students[index].active){
-    students[index].active = false;
+  if(students[index].is_active){
+    students[index].is_active = false;
   } else {
-    students[index].active = true;
+    students[index].is_active = true;
   }
   drawAll();
+  updateStudent(index);
 }
 
 function changeEstimate(form, index){
   students[index].estimate = +form.estimate.value;
   drawAll();
-
+  updateStudent(index);
 }
 
 function changeName(form, index){
-  const value = form.name.value;
+  const value = form.first_name.value;
   if(validateName(value)){
-    students[index].name = value;
+    students[index].first_name = value;
     drawAll();
+    updateStudent(index);
   }else{
     form.classList.add('error');
   }
@@ -269,6 +284,7 @@ function changeCourse(form, index){
   if(value >= 1 && value <= 5){
     students[index].course = value;
     drawAll();
+    updateStudent(index);
   }else{
     form.classList.add('error');
   }
@@ -279,9 +295,60 @@ function changeEmail(form, index){
   if(validateEmail(value)){
     students[index].email = value;
     drawAll();
+    updateStudent(index);
   }else{
     form.classList.add('error');
   }
 }
 
-drawAll();
+function sendRequest(method, url, callback, obj){
+
+  let data = obj || false;
+
+  var xhr = new XMLHttpRequest();
+
+  xhr.open(method, url, true);
+
+  xhr.setRequestHeader("Content-type", "application/json; charset=utf-8");
+  xhr.setRequestHeader("X-Authorization-Token", "735121a3-34ac-11eb-a483-f1c3feb07438");
+
+  if(data){
+    xhr.send(JSON.stringify(data));
+  }else{
+    xhr.send();
+  }
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState != 4) return;
+    if (xhr.status == 200) {
+      let response = JSON.parse(xhr.responseText);
+      callback(response);
+    } else {
+      callback({});
+    }
+  }
+}
+
+function getStudents(){
+  sendRequest('GET', 'https://evgeniychvertkov.com/api/students/', function(res){
+    if(res.is_success){
+      students = res.students;
+      drawAll();
+      return;
+    }
+    if(localStorage.getItem('students')){
+      students = JSON.parse(localStorage.getItem('students'));
+      drawAll();
+    }
+  });
+}
+
+function updateStudent(index){
+  sendRequest('UPDATE', 'https://evgeniychvertkov.com/api/student/' + students[index].id + '/', function(res){
+    if(res.is_success){
+      getStudents();
+      return;
+    }
+  }, students[index]);
+}
+
+getStudents();

@@ -7,3 +7,22 @@ p{
   margin-bottom: 15px;
   color: brown;
 }
+.list{
+  background-color: rosybrown;
+  width: 100%;
+  padding: 20px;
+}
+.list .sp{
+  font-size: 30px;
+}
+.list ul li{
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.list ul li:hover{
+  color: red;
+}
+.mouse-click{
+  cursor: pointer;
+  color: brown;
+}
