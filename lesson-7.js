@@ -220,16 +220,30 @@ window.onload = function(){
   
   //добавление студента
 
-  let ul = document.createElement('ul');
-  for(let i = 0; i < students.length; i++){
-    var li = document.createElement('li');
-    li.innerHTML = students[i].name;
-    li.addEventListener("click", function(event){
-      event.target.outerHTML = "";
-    }); //событие для клика /удаление по клику
-    ul.appendChild(li);
+  function renderStudents(){
+    let ul = document.createElement('ul');
+    for(let i = 0; i < students.length; i++){
+      var li = document.createElement('li');
+      li.innerHTML = students[i].name;
+      
+      (function(i){
+        li.addEventListener("click", function(event){ //событие для клика /удаление по 
+          students.splice(i,  1);
+          renderStudents();
+        });
+      })(i);
+
+      ul.appendChild(li);
+    }
+
+    let list = document.querySelector('.list');  //добавление только тех студентов что есть в массиве, в  том же количестве
+    list.innerHTML = "";
+    list.appendChild(ul);
   }
-  document.querySelector('.list').appendChild(ul);
+  
+  document.querySelector(".btn-create").addEventListener("click", function(event){ //при клике на кнопку отрисовуется студент
+    renderStudents();  
+  });
 
   //другой вариант добавления студентов
   // var el = "<ul>";
