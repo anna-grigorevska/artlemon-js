@@ -94,50 +94,139 @@ let dishes = [
   }
 ];
 
-let counter = {};
+function calc(){
 
-for(var i in ingredients){
-  counter[i] = 0;
+  let counter = {};
+
+  for(var i in ingredients){
+    counter[i] = 0;
+  }
+
+  let index = 0;
+  let minKKal = false;
+
+  let resObj = [];
+
+  for(let i = 0; i < dishes.length; i++){
+    let allProtein = 0;
+    let allCarbohydrates = 0;
+    let allFats = 0;
+    let allKKal = 0;
+
+    let ingrs = "";
+
+    for(let j = 0; j < dishes[i].ingredients.length; j++){
+      let id = dishes[i].ingredients[j].id;
+      let gram = dishes[i].ingredients[j].gram;
+      let protein = ingredients[id].protein;
+      let carbohydrates = ingredients[id].carbohydrates;
+      let fats = ingredients[id].fats;
+      let kilocalories = ingredients[id].kilocalories;
+
+      ingrs += ingredients[id].title + '' ;
+
+      counter[id]++;
+
+      allProtein += (gram/100) * protein;
+      allCarbohydrates += (gram/100) * carbohydrates;
+      allFats += (gram/100) * fats;
+      allKKal += (gram/100) * kilocalories;
+    }
+
+    if(!minKKal){
+      minKKal = allKKal;
+    }
+
+    if(minKKal > allKKal){
+      index = i;
+      minKKal = allKKal;
+    }
+
+    resObj.push({
+      title: dishes[i].title,
+      ingredients: ingrs,
+      allProtein: allProtein,
+      allCarbohydrates: allCarbohydrates,
+      allFats: allFats,
+      allKKal: allKKal
+    });
+  }
+  return resObj;
 }
 
-let index = 0;
-let minKKal = false;
+function render(resObj){
 
-for(let i = 0; i < dishes.length; i++){
-  let allProtein = 0;
-  let allCarbohydrates = 0;
-  let allFats = 0;
-  let allKKal = 0;
+  let table = document.querySelector("table tbody");
+  table.innerHTML = "";
 
-  for(let j = 0; j < dishes[i].ingredients.length; j++){
-    let id = dishes[i].ingredients[j].id;
-    let gram = dishes[i].ingredients[j].gram;
-    let protein = ingredients[id].protein;
-    let carbohydrates = ingredients[id].carbohydrates;
-    let fats = ingredients[id].fats;
-    let kilocalories = ingredients[id].kilocalories;
+  for(let i = 0; i < resObj.length; i++){
+    let tr = document.createElement("tr");
 
-    counter[id]++;
+    let tdTitle = document.createElement("td");
+    tdTitle.innerHTML = resObj[i].title;
+    tr.appendChild(tdTitle);
 
-    allProtein += (gram/100) * protein;
-    allCarbohydrates += (gram/100) * carbohydrates;
-    allFats += (gram/100) * fats;
-    allKKal += (gram/100) * kilocalories;
+    let tdIngrds = document.createElement("td");
+    tdIngrds.innerHTML = resObj[i].ingredients;
+    tr.appendChild(tdIngrds);
+
+    let tdProtein = document.createElement("td");
+    tdProtein.innerHTML = resObj[i].allProtein;
+    tr.appendChild(tdProtein);
+
+
+    table.appendChild(tr);
   }
-
-  if(!minKKal){
-    minKKal = allKKal;
-  }
-
-  if(minKKal > allKKal){
-    index = i;
-    minKKal = allKKal;
-  }
-
-  console.log(dishes[i].title + "-"  + allProtein + " - " + allCarbohydrates +" - " + allFats + " - " + allKKal);
 }
-console.log(counter);
-console.log(dishes[index]);
+
+function renderIngrds(){
+  let ingrdsDiv = document.getElementById("ingrds");
+  for(let i in ingredients){
+    let div = document.createElement("div");
+    let input = document.createElement("input");
+
+    input.id = "ingrds-" + ingredients[i].id;
+    input.type = "checkbox";
+    input.name = "ingrds";
+
+    let label = document.createElement("label");
+
+    label.innerHTML = ingredients[i].title;
+    label.setAttribute("for", "ingrds" + + ingredients[i].id);
+
+    div.appendChild(input);
+    div.appendChild(label);
+    
+    ingrdsDiv.appendChild(div);
+  }
+}
+
+renderIngrds();
+
+let resObj = calc();
+render(resObj);
+
+let button = document.getElementById("create-dish");
+button.addEventListener("click", function(event){
+  let inputTitle = document.querySelector('input[name="title"]');
+  let inputGram = document.querySelector('input[name="gram"]');
+
+  dishes.push({
+    id: 1,
+    title: inputTitle.value,
+    gram: parseInt(inputGram.value),
+    ingredients: [
+      {
+        id: 1,
+        gram: 25,
+      }
+    ],
+  });
+
+  let resObj = calc();
+  render(resObj);
+});
+
 
 
 //Найти блюда с наименьшей и с наибольшей калорийностью

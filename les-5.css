@@ -36,3 +36,9 @@ p{
  margin: 20px;
  cursor: pointer;
 }
+.wrapper{
+  background-color: rgb(245, 196, 220);
+  margin: 10px;
+  width: 1200px;
+  height: 100px;
+}

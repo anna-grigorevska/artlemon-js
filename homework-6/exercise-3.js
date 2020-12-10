@@ -2,6 +2,7 @@
 рядом с каждым студентом вывести крестик - по нажатию на который студент будет удален
 (удаляется как со страницы, так и с объекта), если был удален последний студент написать текстовое сообщение (“Студенты не найдены”)
 */
+const courseAmount = 5;
 
 let students = [];
 
@@ -83,14 +84,8 @@ function deleteStudent(index){
 
 function averageRatingStudents(students){
   let tbodyEstimate = document.getElementById('tbody-estimate');
-  let result = {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0
-  };
-  for (let i = 1; i <= 5; i++){
+  let result = {};
+  for (let i = 1; i <= courseAmount; i++){
     let amountStudents = 0;
     let sumEstimate = 0;
     for(student of students){
@@ -101,15 +96,13 @@ function averageRatingStudents(students){
     }
     result[i] = (sumEstimate / amountStudents).toFixed(2);
   }
-  tbodyEstimate.innerHTML = `
-    <tr>
-      <td class="${getClassByEstimation(result[1])}">${result[1]}</td>
-      <td class="${getClassByEstimation(result[2])}">${result[2]}</td>
-      <td class="${getClassByEstimation(result[3])}">${result[3]}</td>
-      <td class="${getClassByEstimation(result[4])}">${result[4]}</td>
-      <td class="${getClassByEstimation(result[5])}">${result[5]}</td>      
-    </tr>
-  `;
+  let resultHTML = '<tr>';
+  for (let i = 1; i <= courseAmount; i++){
+    resultHTML += `<td class="${getClassByEstimation(result[i])}">${result[i]}</td>`;
+  }
+  resultHTML += '</tr>';
+
+  tbodyEstimate.innerHTML = resultHTML;
 }
 
 
@@ -128,14 +121,8 @@ function amountInactiveStudents(students){
 
 function amountInactiveStudentsByCourse(students){
   let tbodyInactive = document.getElementById('tbody-inactive');
-  let result = {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0
-  };
-  for(let i = 1; i <= 5; i++){
+  let result = {};
+  for(let i = 1; i <= courseAmount; i++){
     let amountStudents = 0;
     for(student of students){
       if(!student.is_active && student.course === i){
@@ -144,26 +131,23 @@ function amountInactiveStudentsByCourse(students){
     }
     result[i] = amountStudents;
   }
-  tbodyInactive.innerHTML = `
-    <tr>
-      <td>${result[1]}</td>
-      <td>${result[2]}</td>
-      <td>${result[3]}</td>
-      <td>${result[4]}</td>
-      <td>${result[5]}</td>      
-    </tr>
-  `;
+  let resultHTML = '<tr>';
+  for (let i = 1; i <= courseAmount; i++){
+    resultHTML += `<td>${result[i]}</td>`;
+  }
+  resultHTML += '</tr>';
+  tbodyInactive.innerHTML = resultHTML;
 }
 
 function millisecondsToHours(time){
   return time / 1000 / 60 / 60;
 }
 
-function lastCreatedStudents(students){
+function studentCreatedAtLastHour(students){
   let statisticsLastHour = document.getElementById('statistics-last-hour');
   let amount = 0;
   for(student of students){
-    if(millisecondsToHours(+new Date()) - millisecondsToHours(+new Date(student.date)) < 1){
+    if(millisecondsToHours(+new Date() - +new Date(student.date)) < 1){
       amount++;
     }
   }
@@ -175,7 +159,7 @@ function drawAll(){
   amountInactiveStudents(students);
   averageRatingStudents(students);
   amountInactiveStudentsByCourse(students);
-  lastCreatedStudents(students);
+  studentCreatedAtLastHour(students);
   localStorage.setItem('students', JSON.stringify(students));
 }
 
@@ -211,22 +195,23 @@ function addStudent(form){
   if(!validateName(first_name)){
     validation += '<p>Имя должно содержать только буквы</p>';
   }
-  if(!(course >= 1 && course <= 5)){
-    validation += '<p>Введите курс от 1 до 5</p>';
+  if(!(course >= 1 && course <= courseAmount)){
+    validation += `<p>Введите курс от 1 до ${courseAmount}</p>`;
   }
   if(!validateEmail(email)){
-  validation += '<p>Введите валидный email</p>';
+    validation += '<p>Введите валидный email</p>';
   }
   if(validation.length === 0){
     errorEl.innerHTML = '';
+    students.unshift(student);
+    drawAll();
     sendRequest('POST', 'https://evgeniychvertkov.com/api/student/', function(res){
       if(res.is_success){
         getStudents();
         return;
       }
     }, student);
-    students.unshift(student);
-    drawAll();
+    form.reset();
   }else{
     errorEl.innerHTML = validation;
     form.classList.add('error');
@@ -241,11 +226,11 @@ function addStudent(form){
 function getClassByEstimation(estimation){
   if(estimation <= 3){
     return 'red';
-  } else if(estimation >= 3 && estimation <= 4){
+  } 
+  if(estimation >= 3 && estimation <= 4){
     return 'yellow';
-  } else {
-    return 'green';
   }
+  return 'green';
 }
 
 /*Добавить для каждого студента иконку по нажатию на которую студент переводится в статус неактивный из активного и наоборот - 
@@ -281,7 +266,7 @@ function changeName(form, index){
 
 function changeCourse(form, index){
   const value =  +form.course.value;
-  if(value >= 1 && value <= 5){
+  if(value >= 1 && value <= courseAmount){
     students[index].course = value;
     drawAll();
     updateStudent(index);
