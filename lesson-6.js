@@ -210,17 +210,24 @@ let button = document.getElementById("create-dish");
 button.addEventListener("click", function(event){
   let inputTitle = document.querySelector('input[name="title"]');
   let inputGram = document.querySelector('input[name="gram"]');
+  const ingredientsElements = document.querySelectorAll('[name="ingrds"]');
+  let ingredients = [];
+  ingredientsElements.forEach(
+    (item, index) => {
+      if (item.checked) {
+        ingredients.push({
+          id: index + 1,
+          gram: parseInt(inputGram.value)
+        });
+      }
+    }
+  )
 
   dishes.push({
     id: 1,
     title: inputTitle.value,
     gram: parseInt(inputGram.value),
-    ingredients: [
-      {
-        id: 1,
-        gram: 25,
-      }
-    ],
+    ingredients,
   });
 
   let resObj = calc();

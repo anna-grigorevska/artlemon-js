@@ -8,15 +8,13 @@
 <body>
   <form id="form" action="/send/" method="post" onsubmit="return false;">
     <input type="text" name ="title_dish" value="" placeholder="title dish">
-    <div class="ingredients" id="ingredients">
-      <!-- <input type="checkbox" name="in1" id="in1" value="1">
-      <label for="in1">ingredient 1</label>
-      <input type="checkbox" name="in2" id="in2" value="2">
-      <label for="in2">ingredient 2</label> -->
-    </div>
+    <div class="ingredients" id="ingredients"></div>
     
     <input type="submit" name="send" value="send" class="submit" >
+    <button id="show">Show</button>
   </form>
+  <br />
+  <ul id="dishes"></ul>
   <script src="lesson-9.js"></script>
 </body>
 </html>

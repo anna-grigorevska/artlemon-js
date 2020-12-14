@@ -214,18 +214,24 @@ console.log(o); //{div: 2, s2: ƒ}
 //
 
 
-let ingredients = [
-  {
+let ingredients = {
+  1: {
     id: 1,
     title: "ing1",
-  },{
+  },
+  2: {
     id: 2,
     title: "ing2",
-  },{
+  },
+  3: {
     id: 3,
     title: "ing3",
-  }
-];
+  },
+  4: {
+    id: 4,
+    title: "ing4",
+  },
+};
 
 let dishes = [
   {
@@ -241,37 +247,73 @@ let dishes = [
 
 function renderIngredients(){
   let ingredientsElement = document.getElementById("ingredients")
-  for(let i = 0; i < ingredients.length; i++){
-    let input = document.createElement("input");
+  for(let i in ingredients){
+    let inputCheckbox = document.createElement("input");
+    let inputGram = document.createElement("input");
     let label = document.createElement("label");
+    let div = document.createElement("div");
 
-    input.type = "checkbox";
-    input.id = "in" + ingredients[i].id;
-    input.name = "in" + ingredients[i].id;
-    input.value = ingredients[i].id;
+    inputCheckbox.type = "checkbox";
+    inputCheckbox.id = "in" + ingredients[i].id;
+    inputCheckbox.name = "in";
+    inputCheckbox.value = ingredients[i].id;
 
     label.setAttribute("for", "in" + ingredients[i].id);
     label.innerHTML = ingredients[i].title;
 
-    ingredientsElement.appendChild(input);
-    ingredientsElement.appendChild(label);
-  };
+    inputGram.type = "text";
+    inputGram.value = "";
+    inputGram.name = "in" + ingredients[i].id;
+
+    div.appendChild(inputCheckbox);
+    div.appendChild(label);
+    div.appendChild(inputGram);
+    ingredientsElement.appendChild(div);
+  }
 }
+
+function renderDishes(){
+  let dishesElement = document.getElementById("dishes");
+  dishesElement.innerHTML = "";
+  for(let i in dishes){
+    let li = document.createElement("li");
+    li.innerHTML = dishes[i].title;
+    dishesElement.appendChild(li);
+  }
+  
+}
+
 renderIngredients();
+renderDishes();
 
 let submit = document.querySelector(".submit");
+
 submit.addEventListener("click", event => {
   let form = document.getElementById("form");
   let formData = new FormData(form);
 
   let ingr = formData.getAll("IN")
   let title = formData.get("title_dish");
+
   let valueIngredients = [];
+
+  for(let i = 0; i < ingr.length; i++){
+    valueIngredients.push({
+      id: +ingr[i],
+      gram: +formData.get("in" + ingr[i]),
+    });
+  }
 
   let dish = {
     title,
     ingredients: valueIngredients,
   };
+
+  dishes.push(dish);
+
+  renderDishes()
 });
+
+document.getElementById("show").addEventListener("click", event => {console.log(dishes)});
 
 
