@@ -21,6 +21,9 @@ function draw(students){
     template += `
       <tr class="${className}">
         <td> 
+          <img src="${students[i].img}" alt="${students[i].first_name}" class="img-student"/>
+        </td>
+        <td> 
           <form onsubmit="changeName(this, ${i});return false;">
             <input value="${students[i].first_name}" name="first_name" type="text" maxlength="15" class="form-control"/>
             <span>Имя должно содержать только буквы</span>
@@ -183,6 +186,7 @@ function addStudent(form){
   const course = +form.course.value;
   const email = form.email.value;
   const student = {
+    img: 'https://agile.yakubovsky.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png',
     first_name: first_name,
     estimate: +form.estimate.value,
     course: course,

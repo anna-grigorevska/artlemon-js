@@ -5,7 +5,12 @@
   <title>lesson-14</title>
 </head>
 <body>
-  <button id="next">Next</button>
+  <form name="questions" action="/" method="POST" onsubmit="return false;">
+    <label id="title-question"></label>
+    <br />
+    <div id="answers"></div>
+    <input type="submit" id="next" value="Next question" />
+  </form>
   <script src="lesson-14.js"></script>
 </body>
 </html>

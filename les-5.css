@@ -42,3 +42,11 @@ p{
   width: 1200px;
   height: 100px;
 }
+
+.active{
+  background-color: darkcyan;
+}
+
+.not-active{
+  background-color: red;
+}

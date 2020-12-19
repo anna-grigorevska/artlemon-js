@@ -223,3 +223,8 @@
 .students .statistics-inactive .sum-students span{
   font-size: 18px;
 }
+.list-students .text-block table tr td img.img-student {
+  display: block;
+  width: 30px;
+  height: 30px;
+}
